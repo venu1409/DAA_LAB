@@ -1,0 +1,101 @@
+/* Knapsack */
+//USER INPUT CODE
+#include <stdio.h>
+
+int main() {
+    int n, i, j;
+    float capacity, temp, totalProfit = 0;
+
+    printf("Enter number of items: ");
+    scanf("%d", &n);
+
+    float profit[n], weight[n], ratio[n];
+
+    printf("Enter knapsack capacity: ");
+    scanf("%f", &capacity);
+
+    printf("Enter profit and weight of each item:\n");
+    for (i = 0; i < n; i++) {
+        printf("Item %d profit: ", i + 1);
+        scanf("%f", &profit[i]);
+        printf("Item %d weight: ", i + 1);
+        scanf("%f", &weight[i]);
+    }
+
+    // Calculate P/W ratio
+    for (i = 0; i < n; i++) {
+        ratio[i] = profit[i] / weight[i];
+    }
+
+    // Sort by ratio (descending)
+    for (i = 0; i < n - 1; i++) {
+        for (j = i + 1; j < n; j++) {
+            if (ratio[i] < ratio[j]) {
+                temp = ratio[i]; ratio[i] = ratio[j]; ratio[j] = temp;
+
+                temp = profit[i]; profit[i] = profit[j]; profit[j] = temp;
+                temp = weight[i]; weight[i] = weight[j]; weight[j] = temp;
+            }
+        }
+    }
+
+    for (i = 0; i < n; i++) {
+        if (weight[i] <= capacity) {
+            capacity -= weight[i];
+            totalProfit += profit[i];
+        } else {
+            totalProfit += profit[i] * (capacity / weight[i]);
+            break;
+        }
+    }
+
+    printf("\nMaximum Profit = %.2f\n", totalProfit);
+
+    return 0;
+}
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+//with Class example
+
+#include <stdio.h>
+
+int main() {
+    int n = 7;
+    int i, j;
+    float capacity = 15;
+    float profit[7] = {10, 5, 15, 7, 6, 18, 3};
+    float weight[7] = {2, 3, 5, 7, 1, 4, 1};
+    float ratio[7], temp;
+    float totalProfit = 0;
+
+    // Calculate P/W ratio
+    for (i = 0; i < n; i++) {
+        ratio[i] = profit[i] / weight[i];
+    }
+
+    // Sort by ratio (descending)
+    for (i = 0; i < n - 1; i++) {
+        for (j = i + 1; j < n; j++) {
+            if (ratio[i] < ratio[j]) {
+                temp = ratio[i]; ratio[i] = ratio[j]; ratio[j] = temp;
+
+                temp = profit[i]; profit[i] = profit[j]; profit[j] = temp;
+                temp = weight[i]; weight[i] = weight[j]; weight[j] = temp;
+            }
+        }
+    }
+
+    // Greedy selection
+    for (i = 0; i < n; i++) {
+        if (weight[i] <= capacity) {
+            capacity = capacity - weight[i];
+            totalProfit = totalProfit + profit[i];
+        } else {
+            totalProfit = totalProfit + (profit[i] * (capacity / weight[i]));
+            break;
+        }
+    }
+
+    printf("Maximum Profit = %.2f\n", totalProfit);
+
+    return 0;
+}
